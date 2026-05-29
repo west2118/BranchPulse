@@ -9,8 +9,10 @@ dotenv.config();
 
 import authRoutes from "./routes/auth.routes.js";
 import branchRoutes from "./routes/branch.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 import createBranchTable from "./data/createBranchTable.js";
+import createUserTable from "./data/createUserTable.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -27,8 +29,10 @@ app.use(
 // Routes
 app.use("/api", authRoutes);
 app.use("/api", branchRoutes);
+app.use("/api", userRoutes);
 
 createBranchTable();
+createUserTable();
 
 // Testing postgres
 app.get("/", async (req, res) => {

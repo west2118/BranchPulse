@@ -2,28 +2,9 @@ import {
   loginService,
   meService,
   refreshTokenService,
-  registerService,
   revokeRefreshTokenService,
 } from "../services/auth.service.js";
 import { accessTokenCookie, refreshTokenCookie } from "../utils/cookie.js";
-
-export const register = async (req, res) => {
-  const { name, username, role, status, password, confirmPassword } = req.body;
-
-  try {
-    if (password !== confirmPassword)
-      return res
-        .status(400)
-        .json({ success: false, message: "Password didn't matched" });
-
-    const user = await registerService(name, username, role, status, password);
-
-    res.status(201).json({ message: "User created successfully!", user });
-  } catch (error) {
-    console.log(error.message);
-    res.status(401).json({ message: error.message });
-  }
-};
 
 export const login = async (req, res) => {
   const { username, password } = req.body;

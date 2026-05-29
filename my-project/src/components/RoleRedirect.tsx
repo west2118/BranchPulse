@@ -14,7 +14,7 @@ const RoleRedirect = () => {
       return;
     }
 
-    if (user.role === "admin") {
+    if (user.role === "central_admin") {
       navigate("/admin");
     } else if (user.role === "cashier") {
       navigate("/admin/point-of-sale");

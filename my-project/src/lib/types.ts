@@ -1,5 +1,17 @@
 import type { LucideIcon } from "lucide-react";
 
+export type UserSummaryStatsType = {
+  activeUsers: number;
+  admins: number;
+  branchManagers: number;
+  cashiers: number;
+  centralAdmins: number;
+  inactiveUsers: number;
+  inventoryStaff: number;
+  totalUsers: number;
+  unassigned: number;
+};
+
 export type UserType = {
   id: number;
   name: string;
@@ -7,6 +19,11 @@ export type UserType = {
   role: string;
   status: string;
   createdAt: string;
+  email: string;
+  branchId: number;
+  branchName: string;
+  branchCode: string;
+  contact: string;
 };
 
 export type AuthContextType = {
@@ -18,7 +35,7 @@ export type AuthContextType = {
 
 export type SummaryStatType = {
   title: string;
-  value: string;
+  value: number | string;
   subtitle: string;
   subtitleColor: string;
   icon: LucideIcon;

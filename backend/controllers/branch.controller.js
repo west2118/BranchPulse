@@ -1,4 +1,10 @@
 import pool from "../config/db.js";
+import {
+  getBranchesChartsService,
+  getBranchesService,
+  getBranchesSummaryStatsService,
+  getBranchOptionsService,
+} from "../services/branch.service.js";
 
 export const createBranch = async (req, res) => {
   const { branchName, branchCode, region, location, status } = req.body;
@@ -51,62 +57,73 @@ export const createBranch = async (req, res) => {
 };
 
 export const getBranches = async (req, res) => {
+  const client = await pool.connect();
+
   try {
-    const query = `
-        WITH sales AS (
-            SELECT
-                branch_id,
-                SUM(total_amount) AS total_sales
-            FROM transactions
-            WHERE status = 'completed'
-                AND payment_status = 'paid'
-            GROUP BY branch_id
-        ),
+    const { page, limit, search, status, region } = req.query;
 
-         inventory AS (
-            SELECT
-                branch_id,
-                SUM(stock) AS total_inventory
-            FROM branch_inventory
-            GROUP BY branch_id
-        )
+    const branches = await getBranchesService(client, {
+      page: Number(page) || 1,
+      limit: Number(limit) || 10,
+      search,
+      status,
+      region,
+    });
 
-        SELECT
-            b.id,
-            b.manager_id AS "managerId",
-            b.region,
-            b.branch_name AS "branchName",
-            b.branch_code AS "branchCode",
-            b.location,
-            b.status,
-            b.created_at AS "createdAt",
-
-            u.name AS "managerName",
-            u.username AS "managerUsername",
-
-            COALESCE(s.total_sales, 0) AS "totalSales",
-            COALESCE(i.total_inventory, 0) AS "totalInventory"
-
-        FROM branches b
-
-        LEFT JOIN users u
-            ON u.id = b.manager_id
-
-        LEFT JOIN sales s
-            ON s.branch_id = b.id
-
-        LEFT JOIN inventory i
-            ON i.branch_id = b.id
-
-        ORDER BY b.created_at DESC
-    `;
-
-    const { rows: branches } = await pool.query(query);
+    console.log(branches);
 
     return res.status(200).json(branches);
   } catch (error) {
     console.error("Get Branches Error:", error);
 
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch branches",
+    });
+  } finally {
+    client.release();
+  }
+};
+
+export const getBranchesSummaryStats = async (req, res) => {
+  try {
+    const summaryStats = await getBranchesSummaryStatsService();
+
+    return res.status(200).json(summaryStats);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch branches",
+    });
+  }
+};
+
+export const getBranchesCharts = async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    const charts = await getBranchesChartsService(client);
+
+    return res.status(200).json(charts);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch branches",
+    });
+  } finally {
+    client.release();
+  }
+};
+
+export const getBranchOptions = async (req, res) => {
+  try {
+    const branches = await getBranchOptionsService();
+
+    return res.status(200).json(branches);
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch branches",

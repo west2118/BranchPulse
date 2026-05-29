@@ -1,48 +1,80 @@
-import { useState } from "react";
 import BranchesTableRow from "./BranchesTableRow";
 import { Plus, Search, Store } from "lucide-react";
-import BranchDetailsModal from "./BranchDetailsModal";
-import BranchFormModal from "./BranchFormModal";
-import { fetchData } from "../../lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { fetchData, fetchTableData } from "../../lib/utils";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import type { BranchType } from "../../lib/types";
+import Pagination from "../Pagination";
+import TableRowErrorHandling from "../skeletons/TableRowErrorHandling";
+import SkeletonTableRow from "../skeletons/SkeletonTableRow";
+import TableRowNoData from "../skeletons/TableRowNoData";
+import { useEffect, useMemo, useState } from "react";
+import { useTableParams } from "../../hooks/useTableParams";
+import { useDebounceInput } from "../../hooks/useDebounceInput";
 
-const BranchesTable = ({ filteredBranches }: { filteredBranches: any }) => {
-  const [selectedBranch, setSelectedBranch] = useState<any | null>(null);
-  const [modalType, setModalType] = useState<"view" | "create" | "edit" | null>(
-    null,
-  );
+type BranchesTableProps = {
+  handleViewBranch: (branch: BranchType) => void;
+  handleEditBranch: (branch: BranchType) => void;
+  handleCreateBranch: () => void;
+};
 
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["branches-data"],
-    queryFn: fetchData(`${import.meta.env.VITE_API_URL}/branches`),
+type BranchesData = {
+  branches: BranchType[];
+  pagination: {
+    limit: number;
+    page: number;
+    total: number;
+    totalPages: number;
+  };
+};
+
+const BranchesTable = ({
+  handleViewBranch,
+  handleEditBranch,
+  handleCreateBranch,
+}: BranchesTableProps) => {
+  const { params, setParams } = useTableParams({
+    page: 1,
+    limit: 10,
+    search: "",
+    status: "",
+    region: "",
   });
 
-  const handleViewBranch = (branch: any) => {
-    setSelectedBranch(branch);
-    setModalType("view");
-  };
+  const filters = useMemo(
+    () => ({
+      page: params.page || 1,
+      limit: params.limit || 10,
+      search: params.search || "",
+      status: params.status || "",
+      region: params.region || "",
+    }),
+    [params],
+  );
 
-  // Edit Branch
-  const handleEditBranch = (branch: any) => {
-    setSelectedBranch(branch);
-    setModalType("edit");
-  };
+  const [searchInput, setSearchInput] = useState(filters.search);
+  const debouncedSearch = useDebounceInput(searchInput);
 
-  // Create Branch
-  const handleCreateBranch = () => {
-    setSelectedBranch(null);
-    setModalType("create");
-  };
+  useEffect(() => {
+    if (debouncedSearch !== filters.search) {
+      setParams({
+        search: debouncedSearch,
+        page: 1,
+      });
+    }
+  }, [debouncedSearch]);
 
-  const handleCloseModal = () => {
-    setSelectedBranch(null);
-    setModalType(null);
-  };
+  useEffect(() => {
+    setSearchInput(filters.search);
+  }, [filters.search]);
 
-  console.log("Branches: ", data);
+  const { data, isLoading, isError, refetch } = useQuery<BranchesData>({
+    queryKey: ["branches-data", filters],
+    queryFn: fetchTableData(`${import.meta.env.VITE_API_URL}/branches`),
+    placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5,
+  });
 
-  const isFormModalOpen = modalType === "create" || modalType === "edit";
-  const isDetailsModalOpen = modalType === "view";
+  console.log("Data: ", data?.branches);
 
   return (
     <div className="flex-1 overflow-auto mb-6">
@@ -54,16 +86,29 @@ const BranchesTable = ({ filteredBranches }: { filteredBranches: any }) => {
 
             <input
               type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search branch..."
               className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
             />
           </div>
 
           {/* Status Filter */}
-          <select className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
-            <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
+          <select
+            value={filters.region}
+            onChange={(e) =>
+              setParams({
+                region: e.target.value,
+                page: 1,
+              })
+            }
+            className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+          >
+            <option value="">All Regions</option>
+            <option value="Metro Manila">Metro Manila</option>
+            <option value="Luzon">Luzon</option>
+            <option value="Visayas">Visayas</option>
+            <option value="Mindanao">Mindanao</option>
           </select>
 
           {/* Add Branch Button */}
@@ -109,45 +154,45 @@ const BranchesTable = ({ filteredBranches }: { filteredBranches: any }) => {
             </thead>
 
             <tbody className="divide-y divide-gray-100">
-              {data?.map((branch: any) => (
-                <BranchesTableRow
-                  key={branch.id}
-                  branch={branch}
-                  handleCreateBranch={handleCreateBranch}
-                  handleViewBranch={handleViewBranch}
-                  handleEditBranch={handleEditBranch}
+              {isLoading && <SkeletonTableRow columns={8} />}
+
+              {!isLoading && isError && (
+                <TableRowErrorHandling
+                  col={8}
+                  title="branches"
+                  refetch={refetch}
                 />
-              ))}
+              )}
+
+              {!isLoading &&
+                !isError &&
+                data?.branches.map((branch: any) => (
+                  <BranchesTableRow
+                    key={branch.id}
+                    branch={branch}
+                    handleCreateBranch={handleCreateBranch}
+                    handleViewBranch={handleViewBranch}
+                    handleEditBranch={handleEditBranch}
+                  />
+                ))}
+
+              {!isLoading && !isError && data?.branches?.length === 0 && (
+                <TableRowNoData title="branches" col={8} />
+              )}
             </tbody>
+
+            <Pagination
+              limit={params.limit}
+              page={params.page}
+              total={data?.pagination.total}
+              totalPages={data?.pagination.totalPages}
+              setPage={(newPage) => setParams({ page: newPage })}
+              setLimit={(newLimit) => setParams({ limit: newLimit, page: 1 })}
+              col={7}
+            />
           </table>
         </div>
-
-        {filteredBranches.length === 0 && (
-          <div className="text-center py-12">
-            <Store className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500">No branches found</p>
-            <button className="mt-3 text-sm text-blue-600 hover:text-blue-700">
-              Clear search
-            </button>
-          </div>
-        )}
       </div>
-
-      {isDetailsModalOpen && selectedBranch && (
-        <BranchDetailsModal
-          selectedBranch={selectedBranch}
-          isModalOpen={isDetailsModalOpen}
-          isCloseModal={handleCloseModal}
-        />
-      )}
-
-      {isFormModalOpen && (
-        <BranchFormModal
-          isModalOpen={isFormModalOpen}
-          isCloseModal={handleCloseModal}
-          mode={modalType}
-        />
-      )}
     </div>
   );
 };

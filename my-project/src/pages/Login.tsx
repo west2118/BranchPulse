@@ -41,7 +41,7 @@ const LoginPage = () => {
     try {
       const user = await login(formData);
 
-      if (user.role === "admin") {
+      if (user.role === "central_admin") {
         navigate("/admin");
       } else {
         navigate("/staff/scan");

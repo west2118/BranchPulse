@@ -98,6 +98,7 @@ const BranchesTableRow = ({
       <td className="py-3 px-4">
         <div className="flex items-center justify-center gap-2">
           <button
+            onClick={() => handleViewBranch(branch)}
             className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
             title="View Details"
           >

@@ -85,6 +85,22 @@ export const fetchData =
     return response.json();
   };
 
+export const fetchTableData =
+  (url: string) =>
+  async ({ queryKey }: { queryKey: any }) => {
+    const [_key, filters] = queryKey;
+
+    const query = createQueryString(filters);
+
+    const response = await fetchWithAuth(`${url}?${query}`);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return response.json();
+  };
+
 export const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   let response = await fetch(url, {
     ...options,
@@ -117,4 +133,16 @@ export const getDefaultRoute = (role: string) => {
   if (role === "admin") return `/${role}`;
   if (role === "cashier") return `/${role}/point-of-sale`;
   return `/${role}/inventory/dashboard`;
+};
+
+export const createQueryString = (params) => {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, String(value));
+    }
+  });
+
+  return searchParams.toString();
 };

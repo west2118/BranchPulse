@@ -11,23 +11,6 @@ import { hashToken } from "../utils/hash.js";
 
 dotenv.config();
 
-export const registerService = async (
-  name,
-  username,
-  role,
-  status,
-  password,
-) => {
-  const hash = await bcrypt.hash(password, 10);
-
-  const result = await pool.query(
-    `INSERT INTO users(username, password, name, role, status) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-    [username, hash, name, role, status],
-  );
-
-  return result.rows[0];
-};
-
 export const loginService = async ({ username, password }) => {
   const { rows } = await pool.query("SELECT * FROM users WHERE username = $1", [
     username,
