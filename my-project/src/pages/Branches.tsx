@@ -3,10 +3,10 @@ import BranchAnalyticsCharts from "../components/branches/BranchAnalyticsCharts"
 import BranchesTable from "../components/branches/BranchesTable";
 import BranchStatsSection from "../components/branches/BranchStatsSection";
 import StatsCardsSkeleton from "../components/skeletons/StatsCardsSkeleton";
-import BranchChartsSkeleton from "../components/branches/BranchChartsSkeleton";
 import type { BranchType } from "../lib/types";
 import BranchFormModal from "../components/branches/BranchFormModal";
 import BranchDetailsModal from "../components/branches/BranchDetailsModal";
+import BranchChartsSkeleton from "../components/branches/BranchChartsSkeleton";
 
 const BranchManagementPage = () => {
   const [selectedBranch, setSelectedBranch] = useState<BranchType | null>(null);
@@ -40,7 +40,7 @@ const BranchManagementPage = () => {
   const isDetailsModalOpen = modalType === "view";
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50">
+    <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-white">
       <Suspense fallback={<StatsCardsSkeleton />}>
         <BranchStatsSection />
       </Suspense>

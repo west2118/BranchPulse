@@ -57,3 +57,70 @@ export type BranchType = {
   totalSales: number;
   totalInventory: number;
 };
+
+export type ChartData = {
+  name: string;
+  value: number;
+};
+
+export type EmployeeProductivity = {
+  name: string;
+  employees: number;
+  salesPerEmployee: number;
+  ticketsPerEmployee: number;
+};
+
+export type DashboardDataType = {
+  summaryStats: {
+    totalBranches: number;
+    totalSales: number;
+    totalStocks: number;
+  };
+  topPerforming: ChartData;
+  needsImprovement: ChartData;
+  monthlySalesOverview: ChartData[];
+  branchPerformance: ChartData[];
+  inventoryDistribution: ChartData[];
+  employeeProductivityOverview: EmployeeProductivity[];
+};
+
+export type SalesDataType = {
+  summaryStats: {
+    totalSales: number;
+    avgSalesPerBranch: number;
+    bestPerformingBranch: {
+      branchName: string;
+      sales: number;
+    };
+    fastestGrowingBranch: {
+      branchName: string;
+      growthPercent: number;
+    };
+  };
+
+  salesComparisonMonthly: {
+    name: string;
+    branches: {
+      branch: string;
+      sales: number;
+    }[];
+  }[];
+
+  monthlySalesOverview: ChartData[];
+
+  branchPerformance: ChartData[];
+
+  marketShare: {
+    name: string;
+    sales: number;
+    marketShare: string;
+  }[];
+
+  topSellingProductsByBranch: {
+    product: string;
+    branches: {
+      branch: string;
+      sold: number;
+    }[];
+  }[];
+};

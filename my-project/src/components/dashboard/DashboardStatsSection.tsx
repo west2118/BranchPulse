@@ -1,25 +1,23 @@
-import StatsCards from "../StatsCards";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { fetchData, formatPesoShort } from "../../lib/utils";
-import type { SummaryStatType } from "../../lib/types";
 import { Activity, Boxes, Building2, DollarSign } from "lucide-react";
+import type { SummaryStatType } from "../../lib/types";
+import StatsCards from "../StatsCards";
+import { formatPesoShort } from "../../lib/utils";
 
-type StatsData = {
-  totalBranches: number;
-  totalSales: number;
-  totalStocks: number;
+type DashboardStatsSectionProps = {
+  summaryStatsData: {
+    totalBranches: number;
+    totalSales: number;
+    totalStocks: number;
+  };
 };
 
-const BranchStatsSection = () => {
-  const { data } = useSuspenseQuery<StatsData>({
-    queryKey: ["branches-stats"],
-    queryFn: fetchData(`${import.meta.env.VITE_API_URL}/branches-stats`),
-  });
-
+const DashboardStatsSection = ({
+  summaryStatsData,
+}: DashboardStatsSectionProps) => {
   const summaryStats: SummaryStatType[] = [
     {
       title: "Total Branches",
-      value: data?.totalBranches ?? 0,
+      value: summaryStatsData?.totalBranches ?? 0,
       subtitle: "21 Active",
       subtitleColor: "text-green-600",
       icon: Building2,
@@ -28,7 +26,7 @@ const BranchStatsSection = () => {
     },
     {
       title: "Total Sales",
-      value: formatPesoShort(data?.totalSales ?? 0),
+      value: formatPesoShort(summaryStatsData?.totalSales ?? 0),
       subtitle: "+12.5% from last month",
       subtitleColor: "text-green-600",
       icon: DollarSign,
@@ -37,7 +35,7 @@ const BranchStatsSection = () => {
     },
     {
       title: "Total Inventory",
-      value: data?.totalStocks ?? 0,
+      value: summaryStatsData?.totalStocks ?? 0,
       subtitle: "Units across branches",
       subtitleColor: "text-gray-400",
       icon: Boxes,
@@ -55,9 +53,7 @@ const BranchStatsSection = () => {
     },
   ];
 
-  console.log(summaryStats);
-
   return <StatsCards summaryStats={summaryStats} />;
 };
 
-export default BranchStatsSection;
+export default DashboardStatsSection;

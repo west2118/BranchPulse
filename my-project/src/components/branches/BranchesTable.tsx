@@ -74,10 +74,8 @@ const BranchesTable = ({
     staleTime: 1000 * 60 * 5,
   });
 
-  console.log("Data: ", data?.branches);
-
   return (
-    <div className="flex-1 overflow-auto mb-6">
+    <div className="flex-1 overflow-auto">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 p-4 border-b border-gray-200">
           {/* Search */}
@@ -125,7 +123,7 @@ const BranchesTable = ({
           <table className="w-full">
             <thead>
               {/* Column Headers Row */}
-              <tr className="bg-gray-100 border-b border-gray-200">
+              <tr className="bg-gray-50 border-b border-gray-200">
                 <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
                   Branch
                 </th>

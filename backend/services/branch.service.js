@@ -103,7 +103,7 @@ export const getBranchesService = async (
 
     ${whereClause}
 
-    ORDER BY b.created_at DESC
+    ORDER BY "totalSales" DESC
 
     LIMIT $${idx}
     OFFSET $${idx + 1}

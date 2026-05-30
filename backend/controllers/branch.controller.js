@@ -70,8 +70,6 @@ export const getBranches = async (req, res) => {
       region,
     });
 
-    console.log(branches);
-
     return res.status(200).json(branches);
   } catch (error) {
     console.error("Get Branches Error:", error);

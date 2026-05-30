@@ -10,6 +10,8 @@ dotenv.config();
 import authRoutes from "./routes/auth.routes.js";
 import branchRoutes from "./routes/branch.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js";
+import salesRoutes from "./routes/sales.routes.js";
 
 import createBranchTable from "./data/createBranchTable.js";
 import createUserTable from "./data/createUserTable.js";
@@ -30,6 +32,8 @@ app.use(
 app.use("/api", authRoutes);
 app.use("/api", branchRoutes);
 app.use("/api", userRoutes);
+app.use("/api", dashboardRoutes);
+app.use("/api", salesRoutes);
 
 createBranchTable();
 createUserTable();
