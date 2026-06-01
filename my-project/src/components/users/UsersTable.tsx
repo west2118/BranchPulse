@@ -70,7 +70,7 @@ const UsersTable = ({ handleEditUser, handleCreateUser }: UsersTableProps) => {
   });
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
       {/* Integrated Header with Search and Filters */}
       <div className="p-4 border-b border-gray-200 bg-white">
         <div className="flex flex-col gap-4">

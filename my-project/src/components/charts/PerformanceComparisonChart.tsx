@@ -11,6 +11,7 @@ import {
 import type { ChartData } from "../../lib/types";
 import { pesoFormatter } from "../../lib/utils";
 import { COLORS } from "../../lib/constants";
+import CustomTooltip from "../badges/CustomTooltip";
 
 const PerformanceComparisonChart = ({
   branchPerformance,
@@ -27,12 +28,7 @@ const PerformanceComparisonChart = ({
           stroke="#94a3b8"
         />
         <YAxis type="category" dataKey="name" stroke="#94a3b8" width={80} />
-        <Tooltip
-          formatter={(value) => [
-            `${pesoFormatter.format(Number(value))}`,
-            "Sales",
-          ]}
-        />
+        <Tooltip content={<CustomTooltip />} />
         <Bar dataKey="value" radius={[0, 6, 6, 0]}>
           {branchPerformance.map((_, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

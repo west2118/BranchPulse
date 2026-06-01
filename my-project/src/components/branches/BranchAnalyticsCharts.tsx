@@ -7,13 +7,10 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
 import { fetchData, pesoFormatter } from "../../lib/utils";
-
-const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"];
+import ChartCard from "../ui/ChartCard";
+import DistributionChart from "../charts/DistributionChart";
 
 type SummaryStatsData = {
   salesDistribution: {
@@ -63,35 +60,9 @@ const BranchAnalyticsCharts = () => {
         </ResponsiveContainer>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Branch Distribution by Region
-        </h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={data?.stockDistribution}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={100}
-              paddingAngle={2}
-              dataKey="value"
-              label={({ name, percent }) =>
-                `${name} ${(percent ?? 0 * 100).toFixed(0)}%`
-              }
-            >
-              {data?.stockDistribution.map((_, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+      <ChartCard title="Branch Distribution by Region">
+        <DistributionChart stockDistribution={data?.stockDistribution} />
+      </ChartCard>
     </div>
   );
 };

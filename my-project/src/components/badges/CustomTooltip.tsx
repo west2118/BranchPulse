@@ -1,4 +1,4 @@
-import { pesoFormatter } from "../../lib/utils";
+import { capitalizeFirst, pesoFormatter } from "../../lib/utils";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -7,7 +7,7 @@ const CustomTooltip = ({ active, payload, label }) => {
         <p className="font-semibold text-slate-800 mb-2">{label}</p>
         {payload.map((entry, index) => (
           <p key={index} className="text-sm" style={{ color: entry.color }}>
-            {entry.name}: {pesoFormatter.format(entry.value)}
+            {capitalizeFirst(entry.name)}: {pesoFormatter.format(entry.value)}
           </p>
         ))}
       </div>

@@ -12,6 +12,9 @@ import branchRoutes from "./routes/branch.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import salesRoutes from "./routes/sales.routes.js";
+import inventoryRoutes from "./routes/inventory.routes.js";
+import productivityRoutes from "./routes/productivity.routes.js";
+import leaderboardRoutes from "./routes/leaderboard.routes.js";
 
 import createBranchTable from "./data/createBranchTable.js";
 import createUserTable from "./data/createUserTable.js";
@@ -34,6 +37,9 @@ app.use("/api", branchRoutes);
 app.use("/api", userRoutes);
 app.use("/api", dashboardRoutes);
 app.use("/api", salesRoutes);
+app.use("/api", inventoryRoutes);
+app.use("/api", productivityRoutes);
+app.use("/api", leaderboardRoutes);
 
 createBranchTable();
 createUserTable();

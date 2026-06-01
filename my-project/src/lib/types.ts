@@ -124,3 +124,113 @@ export type SalesDataType = {
     }[];
   }[];
 };
+
+export type InventoryDataType = {
+  summaryStats: {
+    totalInventoryValue: number;
+    totalStocks: number;
+    lowStockCount: number;
+    inventoryTurnover: number;
+  };
+  inventoryLevelsByBranch: ChartData;
+  inventoryByCategory: {
+    name: string;
+    value: number;
+    value2: number;
+  }[];
+  stockMovementsMonthly: {
+    month: string;
+    stockIn: number;
+    stockOut: number;
+  }[];
+  inventoryValueByBranch: ChartData[];
+  productInventoryStatus: {
+    category: string;
+    id: number;
+    productName: string;
+    sku: string;
+    totalStock: number;
+    branches: {
+      branch: string;
+      status: string;
+      stock: number;
+    }[];
+  }[];
+};
+
+export type EmployeeProductivityDataType = {
+  summaryStats: {
+    avgProductivity: string;
+    topPerformer: string;
+    totalEmployees: number;
+    totalSales: string;
+  };
+  productivityByBranch: ChartData[];
+  productivityTrendsMonthly: {
+    name: string;
+    branches: {
+      branch: string;
+      productivity: number;
+    }[];
+  }[];
+  topPerformersMonth: {
+    id: number;
+    branch: string;
+    name: string;
+    productivity: string;
+    role: string;
+    value: number;
+  }[];
+  needsImprovementMonth: {
+    id: number;
+    branch: string;
+    name: string;
+    productivity: string;
+    role: string;
+    value: number;
+  }[];
+  employeePerformance: {
+    id: number;
+    branchName: string;
+    employeeName: string;
+    productivity: string;
+    role: string;
+    totalSales: number;
+    totalTickets: number;
+  }[];
+};
+
+export type LeaderboardDataType = {
+  branchPerformanceRanking: {
+    avgTicket: string;
+    branchCode: string;
+    employeeCount: number;
+    growth: number;
+    name: string;
+    productivity: string;
+    rank: string;
+    region: string;
+    totalSales: number;
+    totalTickets: number;
+  }[];
+  employeePerformance: {
+    avgTicket: string;
+    branchName: string;
+    employeeName: string;
+    id: number;
+    productivity: string;
+    rank: string;
+    role: string;
+    totalSales: number;
+    totalTickets: number;
+  }[];
+  productBestPerformanceRanking: {
+    growth: string;
+    id: number;
+    productName: string;
+    rank: string;
+    totalSales: number;
+    totalUnitsSold: number;
+    category: string;
+  }[];
+};

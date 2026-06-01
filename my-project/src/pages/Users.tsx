@@ -31,7 +31,7 @@ const UserManagementPage = () => {
   const isFormModalOpen = modalType === "create" || modalType === "edit";
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50">
+    <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-white">
       <Suspense fallback={<StatsCardsSkeleton />}>
         <UserStatsSection />
       </Suspense>

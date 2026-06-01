@@ -135,7 +135,7 @@ export const getDefaultRoute = (role: string) => {
   return `/${role}/inventory/dashboard`;
 };
 
-export const createQueryString = (params) => {
+export const createQueryString = (params: any) => {
   const searchParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {

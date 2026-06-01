@@ -22,7 +22,6 @@ const menuItems = [
   { id: "inventory", label: "Inventory Analytics", icon: Package },
   { id: "productivity", label: "Employee Productivity", icon: Users },
   { id: "leaderboards", label: "Leaderboards", icon: Trophy },
-  { id: "reports", label: "Reports", icon: FileText },
   { id: "users", label: "Users", icon: Users2 },
   { id: "settings", label: "Settings", icon: Settings },
 ];

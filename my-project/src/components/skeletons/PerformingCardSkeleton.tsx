@@ -1,6 +1,6 @@
 const PerformingCardSkeleton = () => {
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm animate-pulse">
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 animate-pulse">
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">

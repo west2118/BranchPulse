@@ -18,11 +18,9 @@ const BestSellingProductsTable = ({
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 mb-6">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200">
       <div className="p-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">
-          Best Selling Products by Branch
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-900">Product Sales</h3>
         <p className="text-sm text-gray-500 mt-1">Units sold (YTD)</p>
       </div>
       <div className="overflow-x-auto">
